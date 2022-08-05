@@ -41,6 +41,7 @@
     ]
   },
   "devDependencies": {
-    "normalize.css": "^8.0.1"
+    "normalize.css": "^8.0.1",
+    "sass": "^1.54.3"
   }
 }
