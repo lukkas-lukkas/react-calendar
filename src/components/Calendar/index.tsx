@@ -1,9 +1,7 @@
+import { useEventList } from 'hooks/eventHooks';
 import Kalend, { CalendarView } from 'kalend';
 import 'kalend/dist/styles/index.css';
-import IEvent from 'interfaces/IEvent';
 import style from './Calendar.module.scss';
-import { useRecoilValue } from 'recoil';
-import { stateEventsList } from 'state/atom';
 
 interface IKalendEvent {
     id: number,
@@ -15,7 +13,7 @@ interface IKalendEvent {
 
 export default function Calendar() {
     const kalendEvent = new Map<string, IKalendEvent[]>();
-    const events: IEvent[] = useRecoilValue(stateEventsList);
+    const events = useEventList();
 
     events.forEach(event => {
         const key = event.start.toISOString().slice(0, 10);

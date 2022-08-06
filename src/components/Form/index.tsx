@@ -1,7 +1,6 @@
+import { useAddEvent } from 'hooks/eventHooks';
 import IEvent from 'interfaces/IEvent';
 import React, { useState } from 'react';
-import { useSetRecoilState } from 'recoil';
-import { stateEventsList } from 'state/atom';
 import style from './Form.module.scss';
 
 export default function Form() {
@@ -11,7 +10,7 @@ export default function Form() {
     const [endDate, setEndDate] = useState('');
     const [endHour, setEndHour] = useState('');
 
-    const setStateEventList = useSetRecoilState(stateEventsList);
+    const setNewEvent = useAddEvent();
 
     function formSubmeter(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -23,7 +22,7 @@ export default function Form() {
             description: description,
         };
 
-        setStateEventList(oldEvents => [...oldEvents, newEvent]);
+        setNewEvent(newEvent);
         resetForm();
     }
 
