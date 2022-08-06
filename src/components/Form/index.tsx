@@ -1,4 +1,7 @@
+import IEvent from 'interfaces/IEvent';
 import React, { useState } from 'react';
+import { useSetRecoilState } from 'recoil';
+import { stateEventsList } from 'state/atom';
 import style from './Form.module.scss';
 
 export default function Form() {
@@ -8,9 +11,34 @@ export default function Form() {
     const [endDate, setEndDate] = useState('');
     const [endHour, setEndHour] = useState('');
 
+    const setStateEventList = useSetRecoilState(stateEventsList);
+
     function formSubmeter(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        console.log(description, startDate, startHour, endDate, endHour);
+
+        const newEvent: IEvent = {
+            id: new Date().getTime(),
+            start: prepareDate(startDate, startHour),
+            end: prepareDate(endDate, endHour),
+            description: description,
+        };
+
+        setStateEventList(oldEvents => [...oldEvents, newEvent]);
+        resetForm();
+    }
+
+    function prepareDate(date: string, hour: string): Date {
+        const dateFormat = `${date}T${hour}`;
+
+        return new Date(dateFormat);
+    }
+
+    function resetForm(): void {
+        setDescription('');
+        setStartDate('');
+        setStartHour('');
+        setEndDate('');
+        setEndHour('');
     }
 
     return (
