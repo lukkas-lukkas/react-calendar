@@ -1,3 +1,5 @@
+import { useAddEvent } from 'hooks/eventHooks';
+import IEvent from 'interfaces/IEvent';
 import React, { useState } from 'react';
 import style from './Form.module.scss';
 
@@ -8,9 +10,34 @@ export default function Form() {
     const [endDate, setEndDate] = useState('');
     const [endHour, setEndHour] = useState('');
 
+    const setNewEvent = useAddEvent();
+
     function formSubmeter(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        console.log(description, startDate, startHour, endDate, endHour);
+
+        const newEvent: IEvent = {
+            id: new Date().getTime(),
+            start: prepareDate(startDate, startHour),
+            end: prepareDate(endDate, endHour),
+            description: description,
+        };
+
+        setNewEvent(newEvent);
+        resetForm();
+    }
+
+    function prepareDate(date: string, hour: string): Date {
+        const dateFormat = `${date}T${hour}`;
+
+        return new Date(dateFormat);
+    }
+
+    function resetForm(): void {
+        setDescription('');
+        setStartDate('');
+        setStartHour('');
+        setEndDate('');
+        setEndHour('');
     }
 
     return (

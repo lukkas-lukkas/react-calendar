@@ -1,6 +1,6 @@
+import { useEventList } from 'hooks/eventHooks';
 import Kalend, { CalendarView } from 'kalend';
 import 'kalend/dist/styles/index.css';
-import IEvent from 'interfaces/IEvent';
 import style from './Calendar.module.scss';
 
 interface IKalendEvent {
@@ -13,14 +13,7 @@ interface IKalendEvent {
 
 export default function Calendar() {
     const kalendEvent = new Map<string, IKalendEvent[]>();
-    const events: IEvent[] = [
-        {
-            id: 1,
-            start: new Date('2022-08-06T12:00'),
-            end: new Date('2022-08-06T13:00'),
-            description: 'Summary',
-        }
-    ];
+    const events = useEventList();
 
     events.forEach(event => {
         const key = event.start.toISOString().slice(0, 10);
