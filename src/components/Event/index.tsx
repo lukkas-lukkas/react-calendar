@@ -3,6 +3,10 @@ import style from './Event.module.scss';
 
 export default function Event({ event }: { event: IEvent }) {
     return (
-        <h1>{ event.description }</h1>
+        <div className={style.event}>
+            <div className="cards-info">
+                <h3 className={style.description}>{event.description} - {event.start.toLocaleDateString()}</h3>
+            </div>
+        </div>
     );
 }
