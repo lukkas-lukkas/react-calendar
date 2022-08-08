@@ -1,15 +1,25 @@
+import useSetFilter from 'hooks/filterHooks';
+import IFilter from 'interfaces/IFilter';
 import { useState } from 'react';
 import style from './Filter.module.scss';
 
 export default function Filter() {
-
     const [date, setDate] = useState('');
+
+    const setFilter = useSetFilter();
 
     function submeterForm(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
+
+        const filter: IFilter = {};
+
         if (date) {
-            alert('DATE_TO_FILTER ' + date);
+            filter.date = new Date(date);
+        } else {
+            filter.date = null;
         }
+
+        setFilter(filter);
     }
 
     return (
@@ -21,7 +31,8 @@ export default function Filter() {
                 className={style.input}
                 onChange={event => setDate(event.target.value)}
                 placeholder="By date"
-                value={date} />
+                value={date}
+            />
 
             <button className={style.button}>
                 Filter

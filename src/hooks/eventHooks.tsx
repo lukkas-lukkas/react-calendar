@@ -1,9 +1,10 @@
 import IEvent from 'interfaces/IEvent';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { stateEventsList } from 'state/atom';
+import { filteredEvents } from 'state/selector';
 
 export function useEventList(): IEvent[] {
-    return useRecoilValue(stateEventsList);
+    return useRecoilValue(filteredEvents);
 }
 
 export function useAddEvent() {
