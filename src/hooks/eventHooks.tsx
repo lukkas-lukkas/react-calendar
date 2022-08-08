@@ -1,5 +1,5 @@
 import IEvent from 'interfaces/IEvent';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { stateEventsList } from 'state/atom';
 import { filteredEvents } from 'state/selector';
 
@@ -26,6 +26,21 @@ export function useUpdateEvent() {
                 }
 
                 return eventItem;
+            });
+        });
+    };
+}
+
+export function useDeleteEvent() {
+
+    const [events, setEvents] = useRecoilState(stateEventsList);
+
+    return (event: IEvent) => {
+        setEvents(() => {
+            return events.filter(eventItem => {
+                const result = event.id === eventItem.id;
+
+                return !result;
             });
         });
     };
