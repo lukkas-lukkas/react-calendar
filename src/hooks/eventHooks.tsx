@@ -13,3 +13,19 @@ export function useAddEvent() {
         setStateEventList(oldEvents => [...oldEvents, event]);
     };
 }
+
+export function useUpdateEvent() {
+    const setStateEventList = useSetRecoilState(stateEventsList);
+
+    return (event: IEvent) => {
+        setStateEventList(oldEvents => {
+            return oldEvents.map(eventItem => {
+                if (eventItem.id === event.id) {
+                    return event;
+                }
+
+                return eventItem;
+            });
+        });
+    };
+}

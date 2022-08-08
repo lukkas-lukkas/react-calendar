@@ -1,5 +1,5 @@
-import { useEventList } from 'hooks/eventHooks';
-import Kalend, { CalendarView } from 'kalend';
+import { useEventList, useUpdateEvent } from 'hooks/eventHooks';
+import Kalend, { CalendarEvent, CalendarView, OnEventDragFinish } from 'kalend';
 import 'kalend/dist/styles/index.css';
 import style from './Calendar.module.scss';
 
@@ -14,6 +14,7 @@ interface IKalendEvent {
 export default function Calendar() {
     const kalendEvent = new Map<string, IKalendEvent[]>();
     const events = useEventList();
+    const updateEvent = useUpdateEvent();
 
     events.forEach(event => {
         const key = event.start.toISOString().slice(0, 10);
@@ -31,6 +32,18 @@ export default function Calendar() {
         });
     });
 
+    const onEventDragFinish: OnEventDragFinish = (
+        prevKalendEvent: CalendarEvent,
+        updatedKalendEvent: CalendarEvent,
+    ) => {
+        updateEvent({
+            id: updatedKalendEvent.id,
+            start: new Date(updatedKalendEvent.startAt),
+            end: new Date(updatedKalendEvent.endAt),
+            description: updatedKalendEvent.summary,
+        });
+    };
+
     return (
         <div className={style.container}>
             <Kalend
@@ -41,6 +54,7 @@ export default function Calendar() {
                 timeFormat={'24'}
                 weekDayStart={'Monday'}
                 calendarIDsHidden={['work']}
+                onEventDragFinish={onEventDragFinish}
             />
         </div>
     );
