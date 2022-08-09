@@ -1,4 +1,5 @@
 import { useEventList, useUpdateEvent } from 'hooks/eventHooks';
+import IEvent from 'interfaces/IEvent';
 import Kalend, { CalendarEvent, CalendarView, OnEventDragFinish } from 'kalend';
 import 'kalend/dist/styles/index.css';
 import style from './Calendar.module.scss';
@@ -28,7 +29,7 @@ export default function Calendar() {
             startAt: event.start.toISOString(),
             endAt: event.end.toISOString(),
             summary: event.description,
-            color: 'green'
+            color: event.done ? 'orange': 'blue',
         });
     });
 
@@ -36,12 +37,16 @@ export default function Calendar() {
         prevKalendEvent: CalendarEvent,
         updatedKalendEvent: CalendarEvent,
     ) => {
-        updateEvent({
-            id: updatedKalendEvent.id,
-            start: new Date(updatedKalendEvent.startAt),
-            end: new Date(updatedKalendEvent.endAt),
-            description: updatedKalendEvent.summary,
-        });
+        const event = events.find(event => event.id === updatedKalendEvent.id);
+
+        if (event) {
+            const eventToUpdate: IEvent = {...event};
+
+            eventToUpdate.start = new Date(updatedKalendEvent.startAt);
+            eventToUpdate.end = new Date(updatedKalendEvent.endAt);
+
+            updateEvent(eventToUpdate);
+        }
     };
 
     return (
