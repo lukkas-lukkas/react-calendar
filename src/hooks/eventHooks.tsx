@@ -1,3 +1,5 @@
+import clientHttp from 'http/index';
+import ICreateEvent from 'interfaces/ICreateEvent';
 import IEvent from 'interfaces/IEvent';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { stateEventsList } from 'state/atom';
@@ -10,8 +12,19 @@ export function useEventList(): IEvent[] {
 export function useAddEvent() {
     const setStateEventList = useSetRecoilState(stateEventsList);
 
-    return (event: IEvent) => {
-        setStateEventList(oldEvents => [...oldEvents, event]);
+    return (event: ICreateEvent) => {
+        clientHttp.post('/events', {...event, done: false})
+            .then(response => {
+                const event: IEvent = response.data;
+
+                setStateEventList(oldEvents => [...oldEvents, {
+                    ...event,
+                    start: new Date(event.start),
+                    end: new Date(event.end),
+                }]);
+            }).catch(error => {
+                alert('Error to create event');
+            });
     };
 }
 
