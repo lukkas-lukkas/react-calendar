@@ -9,10 +9,16 @@
 
     .description {
         text-decoration: none;
+        margin-left: 10px;
     }
 
     .icon {
         cursor: pointer;
         color: red;
+    }
+
+    .descriptionBox {
+        display: flex;
+        align-items: center;
     }
 }

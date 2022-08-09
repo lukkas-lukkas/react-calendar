@@ -5,7 +5,7 @@ import EventCheckbox from './EventCheckbox';
 
 export default function Event({ event }: { event: IEvent }) {
     const deleteEvent = useDeleteEvent();
-    
+
     function removeEvent(event: IEvent) {
         if (confirm('Do you want to delete the event?')) {
             deleteEvent(event);
@@ -14,12 +14,13 @@ export default function Event({ event }: { event: IEvent }) {
 
     return (
         <div className={style.event}>
-            <EventCheckbox event={event} />
-            <div className="cards-info">
+
+            <div className={style.descriptionBox}>
+                <EventCheckbox event={event} />
                 <h3 className={style.description}>{event.description} - {event.start.toLocaleDateString()}</h3>
             </div>
             <i className={`far fa-times-circle fa-2x ${style.icon}`} onClick={() => removeEvent(event)}></i>
         </div>
-        
+
     );
 }
