@@ -3,4 +3,5 @@ export default interface IEvent {
     start: Date,
     end: Date,
     description: string,
+    done: boolean,
 }

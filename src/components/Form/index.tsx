@@ -20,6 +20,7 @@ export default function Form() {
             start: prepareDate(startDate, startHour),
             end: prepareDate(endDate, endHour),
             description: description,
+            done: false,
         };
 
         setNewEvent(newEvent);
