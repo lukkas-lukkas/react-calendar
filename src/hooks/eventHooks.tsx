@@ -13,7 +13,7 @@ export function useAddEvent() {
     const setStateEventList = useSetRecoilState(stateEventsList);
 
     return (event: ICreateEvent) => {
-        clientHttp.post('/events', {...event, done: false})
+        clientHttp.post('/events', { ...event, done: false })
             .then(response => {
                 const event: IEvent = response.data;
 
@@ -45,7 +45,7 @@ export function useUpdateEvent() {
                                 end: new Date(event.end),
                             };
                         }
-        
+
                         return eventItem;
                     });
                 });
@@ -60,12 +60,17 @@ export function useDeleteEvent() {
     const [events, setEvents] = useRecoilState(stateEventsList);
 
     return (event: IEvent) => {
-        setEvents(() => {
-            return events.filter(eventItem => {
-                const result = event.id === eventItem.id;
+        clientHttp.delete(`/events/${event.id}`)
+            .then(() => {
+                setEvents(() => {
+                    return events.filter(eventItem => {
+                        const result = event.id === eventItem.id;
 
-                return !result;
+                        return !result;
+                    });
+                });
+            }).catch(error => {
+                alert('Error to delete event');
             });
-        });
     };
 }
