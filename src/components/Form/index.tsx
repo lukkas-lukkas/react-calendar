@@ -1,5 +1,4 @@
 import { useAddEvent } from 'hooks/eventHooks';
-import IEvent from 'interfaces/IEvent';
 import React, { useState } from 'react';
 import style from './Form.module.scss';
 
@@ -15,15 +14,12 @@ export default function Form() {
     function formSubmeter(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
-        const newEvent: IEvent = {
-            id: new Date().getTime(),
+        setNewEvent({
             start: prepareDate(startDate, startHour),
             end: prepareDate(endDate, endHour),
             description: description,
-            done: false,
-        };
+        });
 
-        setNewEvent(newEvent);
         resetForm();
     }
 
