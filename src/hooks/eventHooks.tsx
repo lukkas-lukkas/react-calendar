@@ -32,15 +32,26 @@ export function useUpdateEvent() {
     const setStateEventList = useSetRecoilState(stateEventsList);
 
     return (event: IEvent) => {
-        setStateEventList(oldEvents => {
-            return oldEvents.map(eventItem => {
-                if (eventItem.id === event.id) {
-                    return event;
-                }
+        clientHttp.put(`/events/${event.id}`, event)
+            .then(response => {
+                const event: IEvent = response.data;
 
-                return eventItem;
+                setStateEventList(oldEvents => {
+                    return oldEvents.map(eventItem => {
+                        if (eventItem.id === event.id) {
+                            return {
+                                ...event,
+                                start: new Date(event.start),
+                                end: new Date(event.end),
+                            };
+                        }
+        
+                        return eventItem;
+                    });
+                });
+            }).catch(error => {
+                alert('Error to edit event');
             });
-        });
     };
 }
 
